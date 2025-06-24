@@ -1,6 +1,7 @@
+
 "use client";
 
-import { Sun, Cloud, CloudRain, LocateFixed, Loader2 } from "lucide-react";
+import { LocateFixed, Loader2, Droplets } from "lucide-react";
 import type { WidgetComponentProps } from "@/types";
 import { useEffect, useState } from "react";
 
@@ -10,6 +11,7 @@ interface WeatherData {
   condition: string;
   high: number;
   low: number;
+  rainfallChance: number;
 }
 
 export function WeatherWidget({ instanceId }: WidgetComponentProps) {
@@ -33,6 +35,7 @@ export function WeatherWidget({ instanceId }: WidgetComponentProps) {
             condition: "Sunny",
             high: 75,
             low: 60,
+            rainfallChance: 10,
           });
           setLoading(false);
         },
@@ -46,6 +49,7 @@ export function WeatherWidget({ instanceId }: WidgetComponentProps) {
             condition: "Cloudy",
             high: 72,
             low: 58,
+            rainfallChance: 20,
           });
           setLoading(false);
         },
@@ -60,25 +64,11 @@ export function WeatherWidget({ instanceId }: WidgetComponentProps) {
             condition: "Cloudy",
             high: 72,
             low: 58,
+            rainfallChance: 20,
           });
       setLoading(false);
     }
   }, []);
-
-  const getWeatherIcon = (condition: string) => {
-    switch (condition.toLowerCase()) {
-      case "sunny":
-        return <Sun size={24} />;
-      case "cloudy":
-      case "clouds":
-        return <Cloud size={24} />;
-      case "rain":
-      case "rainy":
-        return <CloudRain size={24} />;
-      default:
-        return <Sun size={24} />;
-    }
-  };
   
   if (loading) {
     return (
@@ -102,17 +92,20 @@ export function WeatherWidget({ instanceId }: WidgetComponentProps) {
 
   return (
     <div className="w-full h-full p-4 flex flex-col justify-between bg-gradient-to-br from-blue-400 to-blue-600 text-white">
-      <div>
-        <p className="font-bold text-lg">{weather.city}</p>
-        <p className="text-4xl font-light">{weather.temperature}°</p>
-        {error && <p className="text-xs text-yellow-300 mt-1">{error}</p>}
-      </div>
-      <div className="flex justify-between items-end">
-        <div className="flex items-center gap-2">
-          {getWeatherIcon(weather.condition)}
-          <p className="font-medium">{weather.condition}</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <p className="font-bold text-2xl">{weather.city}</p>
+          <p className="text-lg">{weather.condition}</p>
+          {error && <p className="text-xs text-yellow-300 mt-1">{error}</p>}
         </div>
-        <p className="text-sm">H:{weather.high}° L:{weather.low}°</p>
+        <p className="text-6xl font-thin">{weather.temperature}°</p>
+      </div>
+      <div className="flex justify-between items-end text-sm font-medium">
+        <div className="flex items-center gap-1.5">
+            <Droplets size={16} />
+            <span>{weather.rainfallChance}% chance of rain</span>
+        </div>
+        <p>H:{weather.high}° L:{weather.low}°</p>
       </div>
     </div>
   );

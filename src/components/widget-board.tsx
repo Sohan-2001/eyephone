@@ -18,16 +18,16 @@ export default function WidgetBoard() {
             <ConnectivityWidget />
         </div>
         
+        <div className="col-span-4 row-span-2 rounded-3xl overflow-hidden shadow-md">
+            <WeatherWidget instanceId="weather-1" />
+        </div>
+
         <div className="col-span-2 row-span-2">
             <SiriWidget />
         </div>
 
         <div className="col-span-2 row-span-2">
             <PhotosAppWidget />
-        </div>
-        
-        <div className="col-span-2 row-span-1 col-start-2 rounded-3xl overflow-hidden shadow-md">
-            <WeatherWidget instanceId="weather-1" />
         </div>
 
       </div>
