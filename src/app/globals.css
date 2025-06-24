@@ -61,3 +61,40 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes liquid-flow {
+  0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  25% { transform: translate(-50%, -50%) rotate(90deg) scale(1.1); }
+  50% { transform: translate(-50%, -50%) rotate(180deg) scale(0.9); }
+  75% { transform: translate(-50%, -50%) rotate(270deg) scale(1.2); }
+  100% { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+}
+
+.dynamic-wallpaper {
+  background-color: hsl(233, 15%, 12%);
+  overflow: hidden; /* This is crucial */
+}
+
+.dynamic-wallpaper::before,
+.dynamic-wallpaper::after {
+  content: "";
+  position: absolute;
+  z-index: 0; /* Behind the content grid (z-10) */
+  top: 50%;
+  left: 50%;
+  width: 120vw;
+  height: 120vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsl(220, 100%, 70%), transparent 40%);
+  filter: blur(100px); /* Heavy blur for a soft, liquid effect */
+  opacity: 0.5;
+  animation: liquid-flow 30s ease-in-out infinite;
+  will-change: transform;
+}
+
+.dynamic-wallpaper::after {
+  background: radial-gradient(circle, hsl(250, 15%, 28%), transparent 40%);
+  animation-duration: 35s;
+  animation-direction: reverse;
+  opacity: 0.7;
+}
