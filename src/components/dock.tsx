@@ -5,9 +5,9 @@ import { cn } from "@/lib/utils";
 import Link from 'next/link';
 
 const dockItems = [
-  { icon: Phone, color: "bg-green-500", href: "#" },
+  { icon: Phone, color: "bg-green-500", href: "/phone" },
   { icon: Compass, color: "bg-blue-500", href: "/safari" },
-  { icon: MessageCircle, color: "bg-green-400", href: "#" },
+  { icon: MessageCircle, color: "bg-green-400", href: "/messages" },
 ];
 
 export function Dock() {
