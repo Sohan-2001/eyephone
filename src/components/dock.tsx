@@ -1,0 +1,32 @@
+"use client";
+
+import { Phone, Compass, Music, MessageCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const dockItems = [
+  { icon: Phone, color: "bg-green-500" },
+  { icon: Compass, color: "bg-blue-500" },
+  { icon: Music, color: "bg-red-500" },
+  { icon: MessageCircle, color: "bg-green-400" },
+];
+
+export function Dock() {
+  return (
+    <div className="absolute bottom-4 left-4 right-4 h-24 z-10">
+      <div className="relative w-full h-full bg-gray-300/40 dark:bg-gray-600/40 backdrop-blur-xl rounded-3xl p-4 flex items-center justify-around">
+        {dockItems.map((item, index) => (
+          <button key={index} className="flex flex-col items-center gap-1 group">
+            <div
+              className={cn(
+                "w-12 h-12 flex items-center justify-center rounded-xl transition-all duration-200 group-hover:scale-110",
+                item.color
+              )}
+            >
+              <item.icon className="text-white" size={28} />
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}

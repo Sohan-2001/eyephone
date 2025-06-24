@@ -1,0 +1,112 @@
+import React from "react";
+import type { WidgetConfig } from "@/types";
+import { ClockWidget } from "@/components/widgets/clock-widget";
+import { CalendarWidget } from "@/components/widgets/calendar-widget";
+import { WeatherWidget } from "@/components/widgets/weather-widget";
+import { PhotosWidget } from "@/components/widgets/photos-widget";
+import { MusicWidget } from "@/components/widgets/music-widget";
+import { AppIcon } from "@/components/widgets/app-icon";
+import { Settings, Mail, MessagesSquare, Camera } from "lucide-react";
+
+export const WIDGET_REGISTRY: Record<string, WidgetConfig> = {
+  Clock: {
+    id: "Clock",
+    name: "Clock",
+    description: "Shows the current time and date.",
+    component: ClockWidget,
+    colSpan: 2,
+    rowSpan: 2,
+  },
+  Calendar: {
+    id: "Calendar",
+    name: "Calendar",
+    description: "Displays upcoming events.",
+    component: CalendarWidget,
+    colSpan: 2,
+    rowSpan: 1,
+  },
+  Weather: {
+    id: "Weather",
+    name: "Weather",
+    description: "Shows the current weather.",
+    component: WeatherWidget,
+    colSpan: 2,
+    rowSpan: 1,
+  },
+  Photos: {
+    id: "Photos",
+    name: "Photos",
+    description: "Highlights photos from your library.",
+    component: PhotosWidget,
+    colSpan: 2,
+    rowSpan: 2,
+  },
+  Music: {
+    id: "Music",
+    name: "Music",
+    description: "Control your music playback.",
+    component: MusicWidget,
+    colSpan: 2,
+    rowSpan: 1,
+  },
+  Settings: {
+    id: "Settings",
+    name: "Settings",
+    description: "Access system settings.",
+    isIcon: true,
+    component: (props) =>
+      React.createElement(AppIcon, {
+        ...props,
+        icon: Settings,
+        label: "Settings",
+        color: "#8E8E93",
+      }),
+    colSpan: 1,
+    rowSpan: 1,
+  },
+  Mail: {
+    id: "Mail",
+    name: "Mail",
+    description: "Check your email.",
+    isIcon: true,
+    component: (props) =>
+      React.createElement(AppIcon, {
+        ...props,
+        icon: Mail,
+        label: "Mail",
+        color: "#007AFF",
+      }),
+    colSpan: 1,
+    rowSpan: 1,
+  },
+  Messages: {
+    id: "Messages",
+    name: "Messages",
+    description: "Your text conversations.",
+    isIcon: true,
+    component: (props) =>
+      React.createElement(AppIcon, {
+        ...props,
+        icon: MessagesSquare,
+        label: "Messages",
+        color: "#4CD964",
+      }),
+    colSpan: 1,
+    rowSpan: 1,
+  },
+  Camera: {
+    id: "Camera",
+    name: "Camera",
+    description: "Access the camera.",
+    isIcon: true,
+    component: (props) =>
+      React.createElement(AppIcon, {
+        ...props,
+        icon: Camera,
+        label: "Camera",
+        color: "#5856D6",
+      }),
+    colSpan: 1,
+    rowSpan: 1,
+  },
+};
