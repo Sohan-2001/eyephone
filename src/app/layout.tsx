@@ -27,7 +27,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-body antialiased bg-gray-100 dark:bg-gray-900">
+      <body className="font-body antialiased bg-yellow-100">
         <PhoneShell>{children}</PhoneShell>
         <Toaster />
       </body>

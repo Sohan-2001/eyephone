@@ -76,7 +76,7 @@ export default function PhoneShell({
   }
 
   return (
-    <main className="flex min-h-screen w-full items-center justify-center bg-black p-4 font-body">
+    <main className="flex min-h-screen w-full items-center justify-center bg-transparent p-4 font-body">
       <div 
         ref={phoneRef}
         className={cn("w-full max-w-[380px] h-[820px] rounded-[48px] border-[10px] border-black shadow-2xl overflow-hidden relative flex flex-col transition-all duration-300", phoneBgClass())}
@@ -101,7 +101,7 @@ export default function PhoneShell({
       </div>
       <button 
         onClick={toggleFullScreen} 
-        className="fixed bottom-5 right-5 z-[100] bg-white/30 backdrop-blur-md text-white p-3 rounded-full hover:bg-white/40 transition-colors"
+        className="fixed bottom-5 right-5 z-[100] bg-black/10 backdrop-blur-md text-black p-3 rounded-full hover:bg-black/20 transition-colors"
       >
         {isFullScreen ? <Minimize size={24} /> : <Maximize size={24} />}
       </button>
