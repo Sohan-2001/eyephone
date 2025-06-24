@@ -23,7 +23,7 @@ export default function Home() {
     <main className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-indigo-700 via-purple-800 to-pink-800 p-4 font-body">
       <div className={cn(
         "w-full max-w-[380px] h-[820px] bg-transparent rounded-[48px] border-[10px] border-black shadow-2xl overflow-hidden relative flex flex-col transition-all duration-300",
-        isFullScreen && "fixed inset-0 max-w-none w-full h-full rounded-none border-none z-50"
+        isFullScreen && "fixed inset-y-0 h-full left-1/2 -translate-x-1/2 rounded-none border-none z-50"
       )}>
         {/* Notch */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-xl z-20"></div>
