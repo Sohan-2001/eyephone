@@ -12,7 +12,7 @@ const dockItems = [
 export function Dock() {
   return (
     <div className="absolute bottom-4 left-4 right-4 h-24 z-10">
-      <div className="relative w-full h-full bg-white/20 dark:bg-black/20 backdrop-blur-xl rounded-3xl p-4 flex items-center justify-around">
+      <div className="relative w-full h-full bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 p-4 flex items-center justify-around shadow-lg">
         {dockItems.map((item, index) => (
           <button key={index} className="flex flex-col items-center gap-1 group">
             <div
