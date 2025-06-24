@@ -2,28 +2,29 @@
 
 const PhotoPinwheelIcon = () => (
   <div className="w-16 h-16 relative">
-    <div className="absolute inset-0 bg-white rounded-2xl" />
-    <svg viewBox="0 0 100 100" className="w-full h-full p-1">
+    <svg viewBox="0 0 100 100" className="w-full h-full">
       {[
-        "#FF3B30", // Red
-        "#FF9500", // Orange
-        "#FFCC00", // Yellow
-        "#4CD964", // Green
-        "#5AC8FA", // Light Blue
-        "#007AFF", // Blue
-        "#AF52DE", // Purple
-        "#FF2D55", // Pink
+        "#F55246", // Red
+        "#FF8C00", // Orange
+        "#FFCF00", // Yellow
+        "#A4D42B", // Lime Green
+        "#46B654", // Green
+        "#33B5E3", // Cyan
+        "#3478F6", // Blue
+        "#D7356D", // Magenta
       ].map((color, i) => (
-        <g key={color} transform={`rotate(${i * 45} 50 50)`}>
+        <g key={color + i} transform={`rotate(${i * 45 + 22.5} 50 50)`}>
           <path
-            d="M 50 50 L 50 10 A 40 40 0 0 1 85.35 35.35 L 50 50 Z"
+            d="M 50,50 C 35,45 35,15 50,10 C 65,15 65,45 50,50 Z"
             fill={color}
+            fillOpacity="0.9"
           />
         </g>
       ))}
     </svg>
   </div>
 );
+
 
 export function PhotosAppWidget() {
     return (
