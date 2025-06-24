@@ -4,7 +4,7 @@ import { Wifi, Signal, Battery } from "lucide-react";
 export default function Home() {
   return (
     <main className="flex min-h-screen w-full items-center justify-center bg-gray-300 dark:bg-gray-800 p-4 font-body">
-      <div className="w-full max-w-sm h-[85vh] max-h-[900px] bg-background rounded-[48px] border-[10px] border-black dark:border-gray-800 shadow-2xl overflow-hidden relative flex flex-col">
+      <div className="w-full max-w-xs h-[85vh] max-h-[900px] bg-background rounded-[48px] border-[10px] border-black dark:border-gray-800 shadow-2xl overflow-hidden relative flex flex-col">
         {/* Notch */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-xl z-20"></div>
 
