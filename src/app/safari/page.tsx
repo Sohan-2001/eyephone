@@ -3,15 +3,17 @@
 
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
-import { Wifi, Signal, Battery, ArrowLeft } from "lucide-react";
+import { Wifi, Signal, Battery, ArrowLeft, Maximize, Minimize } from "lucide-react";
 import Link from "next/link";
 import SafariFavorites from "@/components/safari-favorites";
 import SafariPrivacyReport from "@/components/safari-privacy-report";
 import SafariReadingList from "@/components/safari-reading-list";
 import SafariBottomNav from "@/components/safari-bottom-nav";
+import { cn } from "@/lib/utils";
 
 export default function SafariPage() {
   const [time, setTime] = useState<Date | null>(null);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   useEffect(() => {
     setTime(new Date());
@@ -23,7 +25,10 @@ export default function SafariPage() {
 
   return (
     <main className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-indigo-800 via-purple-900 to-pink-900 p-4 font-body">
-      <div className="w-full max-w-[370px] h-[820px] bg-[#F1DED5] rounded-[48px] border-[10px] border-black shadow-2xl overflow-hidden relative flex flex-col">
+      <div className={cn(
+        "w-full max-w-[370px] h-[820px] bg-[#F1DED5] rounded-[48px] border-[10px] border-black shadow-2xl overflow-hidden relative flex flex-col transition-all duration-300",
+        isFullScreen && "fixed inset-0 max-w-none w-full h-full rounded-none border-none z-50"
+      )}>
         {/* Notch */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-xl z-30"></div>
 
@@ -58,6 +63,12 @@ export default function SafariPage() {
             </div>
         </Link>
       </div>
+      <button 
+        onClick={() => setIsFullScreen(!isFullScreen)} 
+        className="fixed bottom-5 right-5 z-[100] bg-white/30 backdrop-blur-md text-white p-3 rounded-full hover:bg-white/40 transition-colors"
+      >
+        {isFullScreen ? <Minimize size={24} /> : <Maximize size={24} />}
+      </button>
     </main>
   );
 }
