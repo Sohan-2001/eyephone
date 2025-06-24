@@ -59,7 +59,7 @@ export default function PhonePage() {
   };
 
   return (
-    <main className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-indigo-800 via-purple-900 to-pink-900 p-4 font-body">
+    <main className="flex min-h-screen w-full items-center justify-center bg-black p-4 font-body">
       <div
         ref={phoneRef}
         className="w-full max-w-[370px] h-[820px] bg-black rounded-[48px] border-[10px] border-black shadow-2xl overflow-hidden relative flex flex-col transition-all duration-300"

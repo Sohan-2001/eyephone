@@ -45,7 +45,7 @@ export default function Home() {
 
 
   return (
-    <main className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-indigo-700 via-purple-800 to-pink-800 p-4 font-body">
+    <main className="flex min-h-screen w-full items-center justify-center bg-black p-4 font-body">
       <div 
         ref={phoneRef}
         className="w-full max-w-[380px] h-[820px] bg-transparent rounded-[48px] border-[10px] border-black shadow-2xl overflow-hidden relative flex flex-col transition-all duration-300"
