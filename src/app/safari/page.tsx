@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { format } from "date-fns";
 import { Wifi, Signal, Battery, ArrowLeft, Maximize, Minimize } from "lucide-react";
 import Link from "next/link";
@@ -9,26 +9,50 @@ import SafariFavorites from "@/components/safari-favorites";
 import SafariPrivacyReport from "@/components/safari-privacy-report";
 import SafariReadingList from "@/components/safari-reading-list";
 import SafariBottomNav from "@/components/safari-bottom-nav";
-import { cn } from "@/lib/utils";
 
 export default function SafariPage() {
   const [time, setTime] = useState<Date | null>(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const phoneRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setTime(new Date());
     const timer = setInterval(() => {
       setTime(new Date());
     }, 1000);
-    return () => clearInterval(timer);
+
+    const handleFullScreenChange = () => {
+      setIsFullScreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullScreenChange);
+
+    return () => {
+      clearInterval(timer);
+      document.removeEventListener('fullscreenchange', handleFullScreenChange);
+    };
   }, []);
+
+  const toggleFullScreen = () => {
+    if (!phoneRef.current) return;
+
+    if (!document.fullscreenElement) {
+      phoneRef.current.requestFullscreen().catch(err => {
+        console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+      });
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  };
 
   return (
     <main className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-indigo-800 via-purple-900 to-pink-900 p-4 font-body">
-      <div className={cn(
-        "w-full max-w-[370px] h-[820px] bg-[#F1DED5] rounded-[48px] border-[10px] border-black shadow-2xl overflow-hidden relative flex flex-col transition-all duration-300",
-        isFullScreen && "fixed inset-0 w-full h-full max-w-none rounded-none border-none z-50"
-      )}>
+      <div 
+        ref={phoneRef}
+        className="w-full max-w-[370px] h-[820px] bg-[#F1DED5] rounded-[48px] border-[10px] border-black shadow-2xl overflow-hidden relative flex flex-col transition-all duration-300"
+      >
         {/* Notch */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-xl z-30"></div>
 
@@ -64,7 +88,7 @@ export default function SafariPage() {
         </Link>
       </div>
       <button 
-        onClick={() => setIsFullScreen(!isFullScreen)} 
+        onClick={toggleFullScreen}
         className="fixed bottom-5 right-5 z-[100] bg-white/30 backdrop-blur-md text-white p-3 rounded-full hover:bg-white/40 transition-colors"
       >
         {isFullScreen ? <Minimize size={24} /> : <Maximize size={24} />}
