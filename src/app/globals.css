@@ -71,7 +71,7 @@ body {
 }
 
 .dynamic-wallpaper {
-  background-color: hsl(233, 15%, 12%);
+  background-color: hsl(225, 20%, 30%); /* Mid-tone background */
   overflow: hidden; /* This is crucial */
 }
 
@@ -85,16 +85,16 @@ body {
   width: 120vw;
   height: 120vw;
   border-radius: 50%;
-  background: radial-gradient(circle, hsl(220, 100%, 70%), transparent 40%);
+  background: radial-gradient(circle, hsl(45, 100%, 90%), transparent 40%); /* Light orb */
   filter: blur(100px); /* Heavy blur for a soft, liquid effect */
-  opacity: 0.5;
+  opacity: 0.6;
   animation: liquid-flow 30s ease-in-out infinite;
   will-change: transform;
 }
 
 .dynamic-wallpaper::after {
-  background: radial-gradient(circle, hsl(250, 15%, 28%), transparent 40%);
+  background: radial-gradient(circle, hsl(240, 50%, 40%), transparent 40%); /* Dark orb */
   animation-duration: 35s;
   animation-direction: reverse;
-  opacity: 0.7;
+  opacity: 0.5;
 }
