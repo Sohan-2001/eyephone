@@ -50,29 +50,9 @@ const CalendarWidget = () => {
     );
 };
 
-const SiriIconSVG = () => (
-  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-    <defs>
-      <filter id="siri-blur-filter">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
-      </filter>
-    </defs>
-    <circle cx="50" cy="50" r="48" fill="black" />
-    <g opacity="0.7" style={{ mixBlendMode: 'screen' }} filter="url(#siri-blur-filter)">
-      <ellipse cx="40" cy="45" rx="25" ry="35" fill="#00e5ff" transform="rotate(-30 50 50)" />
-      <ellipse cx="65" cy="55" rx="30" ry="25" fill="#ff00a0" transform="rotate(10 50 50)" />
-      <ellipse cx="55" cy="60" rx="25" ry="20" fill="#c300ff" transform="rotate(80 50 50)"/>
-    </g>
-    <circle cx="50" cy="50" r="20" fill="white" style={{ filter: 'blur(10px)' }} />
-    <circle cx="50" cy="50" r="12" fill="white" style={{ filter: 'blur(5px)' }} />
-  </svg>
-);
-
 const SiriWidget = () => (
-    <div className="bg-black/30 backdrop-blur-2xl aspect-square rounded-3xl p-4 w-full h-full flex flex-col justify-center items-center">
-        <div className="w-24 h-24">
-            <SiriIconSVG />
-        </div>
+    <div className="bg-black/30 backdrop-blur-2xl aspect-square rounded-3xl p-4 w-full h-full">
+        <Image src="https://placehold.co/150x150.png" data-ai-hint="siri icon" alt="Siri" width={150} height={150} className="w-full h-full" />
     </div>
 );
 
