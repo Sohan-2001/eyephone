@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useRef } from "react";
@@ -38,6 +39,21 @@ export default function PhoneShell({
     };
   }, []);
 
+  // This effect handles dark mode for specific pages
+  useEffect(() => {
+    const html = document.documentElement;
+    const isDarkPage = pathname === '/phone';
+    if (isDarkPage) {
+      html.classList.add('dark');
+    } else {
+      html.classList.remove('dark');
+    }
+    // Cleanup on unmount or path change
+    return () => {
+      html.classList.remove('dark');
+    };
+  }, [pathname]);
+
   const toggleFullScreen = () => {
     if (!phoneRef.current) return;
 
@@ -57,22 +73,17 @@ export default function PhoneShell({
       case '/safari':
         return 'bg-[#F1DED5]';
       case '/messages':
-        return 'bg-white';
+        return 'bg-background';
       case '/phone':
-        return 'bg-black';
+        return 'bg-background';
       default:
         return 'bg-transparent';
     }
   }
 
   const statusTextColorClass = () => {
-      switch (pathname) {
-          case '/safari':
-          case '/messages':
-              return 'text-black';
-          default:
-              return 'text-white';
-      }
+      // With the dark class being set, we can rely on themed foreground color
+      return 'text-foreground';
   }
 
   return (
