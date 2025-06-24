@@ -10,7 +10,7 @@ const ControlButton = ({ icon: Icon }: { icon: React.ElementType }) => (
 
 export function ConnectivityWidget() {
   return (
-    <div className="w-full h-full flex items-center justify-around bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 p-4 shadow-lg">
+    <div className="w-full h-full flex items-center justify-around bg-white/20 backdrop-blur-lg rounded-3xl border border-white/20 p-4 shadow-lg">
       <ControlButton icon={Plane} />
       <ControlButton icon={Wifi} />
       <ControlButton icon={Cast} />

@@ -27,7 +27,7 @@ const PhotoPinwheelIcon = () => (
 
 export function PhotosAppWidget() {
     return (
-        <div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 p-4 text-white shadow-lg">
+        <div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-white/20 backdrop-blur-lg rounded-3xl border border-white/20 p-4 text-white shadow-lg">
             <PhotoPinwheelIcon />
             <span className="font-semibold text-lg mt-2">Photos</span>
         </div>
