@@ -111,7 +111,6 @@ export function WeatherWidget({ instanceId }: WidgetComponentProps) {
           fetchWeatherData(latitude, longitude);
         },
         (err) => {
-          console.error("Geolocation error:", err.message);
           fetchDefaultWeather();
         },
         { timeout: 5000 }
