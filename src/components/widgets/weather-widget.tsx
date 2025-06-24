@@ -14,59 +14,110 @@ interface WeatherData {
   rainfallChance: number;
 }
 
+// WMO Weather interpretation codes
+const weatherCodes: { [key: number]: string } = {
+  0: "Clear sky",
+  1: "Mainly clear",
+  2: "Partly cloudy",
+  3: "Overcast",
+  45: "Fog",
+  48: "Depositing rime fog",
+  51: "Light drizzle",
+  53: "Moderate drizzle",
+  55: "Dense drizzle",
+  56: "Light freezing drizzle",
+  57: "Dense freezing drizzle",
+  61: "Slight rain",
+  63: "Moderate rain",
+  65: "Heavy rain",
+  66: "Light freezing rain",
+  67: "Heavy freezing rain",
+  71: "Slight snow fall",
+  73: "Moderate snow fall",
+  75: "Heavy snow fall",
+  77: "Snow grains",
+  80: "Slight rain showers",
+  81: "Moderate rain showers",
+  82: "Violent rain showers",
+  85: "Slight snow showers",
+  86: "Heavy snow showers",
+  95: "Thunderstorm",
+  96: "Thunderstorm with hail",
+  99: "Thunderstorm with heavy hail",
+};
+
+const getConditionFromCode = (code: number) => {
+    return weatherCodes[code] || "Unknown";
+}
+
+
 export function WeatherWidget({ instanceId }: WidgetComponentProps) {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if running on the client and geolocation is available
+    const fetchWeatherData = async (latitude: number, longitude: number) => {
+        setLoading(true);
+        try {
+            const [weatherResponse, geoResponse] = await Promise.all([
+                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&hourly=precipitation_probability&timezone=auto`),
+                fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`)
+            ]);
+
+            if (!weatherResponse.ok) {
+                throw new Error('Failed to fetch weather data.');
+            }
+            if (!geoResponse.ok) {
+                throw new Error('Failed to fetch location data.');
+            }
+
+            const weatherData = await weatherResponse.json();
+            const geoData = await geoResponse.json();
+
+            // To get the current hour's precipitation probability
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentPrecipitation = weatherData.hourly.precipitation_probability[currentHour] || 0;
+
+            setWeather({
+                city: geoData.city || "Unknown Location",
+                temperature: Math.round(weatherData.current.temperature_2m),
+                condition: getConditionFromCode(weatherData.current.weather_code),
+                high: Math.round(weatherData.daily.temperature_2m_max[0]),
+                low: Math.round(weatherData.daily.temperature_2m_min[0]),
+                rainfallChance: currentPrecipitation,
+            });
+            setError(geoData.city ? null : "Could not determine city name.");
+
+        } catch (err: any) {
+            console.error("Weather data fetch error:", err);
+            setError(err.message || 'Failed to fetch data.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchDefaultWeather = async () => {
+        // Default to San Francisco if geolocation fails
+        setError("Using default location.");
+        await fetchWeatherData(37.7749, -122.4194);
+    };
+
     if (typeof navigator !== "undefined" && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          // In a real app, you'd use these coordinates to call a weather API.
-          // For this demo, we'll just use mock data.
           const { latitude, longitude } = position.coords;
-          console.log(`User location: ${latitude}, ${longitude}`);
-          
-          setWeather({
-            city: "Current Location",
-            temperature: 72,
-            condition: "Sunny",
-            high: 75,
-            low: 60,
-            rainfallChance: 10,
-          });
-          setLoading(false);
+          fetchWeatherData(latitude, longitude);
         },
         (err) => {
           console.error("Geolocation error:", err.message);
-          setError("Location access denied.");
-          // Fallback to default weather if location is denied
-          setWeather({
-            city: "San Francisco",
-            temperature: 68,
-            condition: "Cloudy",
-            high: 72,
-            low: 58,
-            rainfallChance: 20,
-          });
-          setLoading(false);
+          fetchDefaultWeather();
         },
-        { timeout: 10000 } // Add a timeout to avoid waiting forever
+        { timeout: 5000 }
       );
     } else {
-      setError("Geolocation is not supported by this browser.");
-      // Fallback for older browsers or non-secure contexts
-       setWeather({
-            city: "San Francisco",
-            temperature: 68,
-            condition: "Cloudy",
-            high: 72,
-            low: 58,
-            rainfallChance: 20,
-          });
-      setLoading(false);
+      fetchDefaultWeather();
     }
   }, []);
   
