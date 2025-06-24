@@ -5,6 +5,7 @@ import { Dock } from "@/components/dock";
 import { ConnectivityWidget } from "@/components/widgets/connectivity-widget";
 import { PhotosAppWidget } from "@/components/widgets/photos-app-widget";
 import { SiriWidget } from "@/components/widgets/siri-widget";
+import { WeatherWidget } from "@/components/widgets/weather-widget";
 
 export default function WidgetBoard() {
   return (
@@ -23,6 +24,10 @@ export default function WidgetBoard() {
 
         <div className="col-span-2 row-span-2">
             <PhotosAppWidget />
+        </div>
+        
+        <div className="col-span-2 row-span-1 col-start-2 rounded-3xl overflow-hidden shadow-md">
+            <WeatherWidget instanceId="weather-1" />
         </div>
 
       </div>
