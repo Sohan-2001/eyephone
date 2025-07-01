@@ -1,6 +1,7 @@
+
 "use client";
 
-import { Phone } from "lucide-react";
+import { Phone, Image as ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from 'next/link';
 
@@ -52,7 +53,7 @@ const MessagesIconSvg = () => (
 
 const dockItems = [
   { icon: Phone, color: "bg-green-500", href: "/phone" },
-  { icon: CameraIconSvg, isComponent: true, href: "#"},
+  { icon: CameraIconSvg, isComponent: true, href: "/camera"},
   { icon: MessagesIconSvg, isComponent: true, href: "/messages" },
 ];
 

@@ -42,7 +42,7 @@ export default function PhoneShell({
   // This effect handles dark mode for specific pages
   useEffect(() => {
     const html = document.documentElement;
-    const isDarkPage = pathname === '/phone';
+    const isDarkPage = pathname === '/phone' || pathname === '/camera';
     if (isDarkPage) {
       html.classList.add('dark');
     } else {
@@ -73,15 +73,20 @@ export default function PhoneShell({
       case '/safari':
         return 'bg-[#F1DED5]';
       case '/messages':
-        return 'bg-background';
       case '/phone':
+      case '/photos':
         return 'bg-background';
+      case '/camera':
+        return 'bg-black';
       default:
         return 'bg-transparent';
     }
   }
 
   const statusTextColorClass = () => {
+      if (pathname === '/camera') {
+        return 'text-white';
+      }
       // With the dark class being set, we can rely on themed foreground color
       return 'text-foreground';
   }

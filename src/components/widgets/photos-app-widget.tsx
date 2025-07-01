@@ -1,4 +1,7 @@
+
 "use client";
+
+import Link from "next/link";
 
 const PhotoPinwheelIcon = () => (
   <div className="w-16 h-16 relative">
@@ -28,9 +31,12 @@ const PhotoPinwheelIcon = () => (
 
 export function PhotosAppWidget() {
     return (
-        <div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-white/20 backdrop-blur-lg rounded-3xl border border-white/20 p-4 text-white shadow-lg">
+        <Link 
+          href="/photos"
+          className="w-full h-full flex flex-col items-center justify-center gap-2 bg-white/20 backdrop-blur-lg rounded-3xl border border-white/20 p-4 text-white shadow-lg transition-transform hover:scale-105"
+        >
             <PhotoPinwheelIcon />
             <span className="font-semibold text-lg mt-2">Photos</span>
-        </div>
+        </Link>
     );
 };
