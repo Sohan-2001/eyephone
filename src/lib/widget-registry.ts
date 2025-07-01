@@ -6,9 +6,10 @@ import { WeatherWidget } from "@/components/widgets/weather-widget";
 import { PhotosWidget } from "@/components/widgets/photos-widget";
 import { MusicWidget } from "@/components/widgets/music-widget";
 import { AppIcon } from "@/components/widgets/app-icon";
-import { Mail, MessagesSquare, Compass } from "lucide-react";
+import { MessagesSquare, Compass } from "lucide-react";
 import { CameraAppIcon } from "@/components/widgets/camera-app-icon";
 import { SettingsAppIcon } from "@/components/widgets/settings-app-icon";
+import { MailAppIcon } from "@/components/widgets/mail-app-icon";
 
 export const WIDGET_REGISTRY: Record<string, WidgetConfig> = {
   Clock: {
@@ -65,13 +66,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetConfig> = {
     name: "Mail",
     description: "Check your email.",
     isIcon: true,
-    component: (props) =>
-      React.createElement(AppIcon, {
-        ...props,
-        icon: Mail,
-        label: "Mail",
-        color: "#007AFF",
-      }),
+    component: MailAppIcon,
     colSpan: 1,
     rowSpan: 1,
   },
