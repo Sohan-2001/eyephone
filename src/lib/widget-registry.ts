@@ -6,10 +6,11 @@ import { WeatherWidget } from "@/components/widgets/weather-widget";
 import { PhotosWidget } from "@/components/widgets/photos-widget";
 import { MusicWidget } from "@/components/widgets/music-widget";
 import { AppIcon } from "@/components/widgets/app-icon";
-import { MessagesSquare, Compass } from "lucide-react";
+import { Compass } from "lucide-react";
 import { CameraAppIcon } from "@/components/widgets/camera-app-icon";
 import { SettingsAppIcon } from "@/components/widgets/settings-app-icon";
 import { MailAppIcon } from "@/components/widgets/mail-app-icon";
+import { MessagesAppIcon } from "@/components/widgets/messages-app-icon";
 
 export const WIDGET_REGISTRY: Record<string, WidgetConfig> = {
   Clock: {
@@ -76,13 +77,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetConfig> = {
     description: "Your text conversations.",
     isIcon: true,
     href: "/messages",
-    component: (props) =>
-      React.createElement(AppIcon, {
-        ...props,
-        icon: MessagesSquare,
-        label: "Messages",
-        color: "#4CD964",
-      }),
+    component: MessagesAppIcon,
     colSpan: 1,
     rowSpan: 1,
   },
