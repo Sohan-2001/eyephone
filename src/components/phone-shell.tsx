@@ -75,6 +75,7 @@ export default function PhoneShell({
       case '/messages':
       case '/phone':
       case '/photos':
+      case '/notes':
         return 'bg-background';
       case '/camera':
         return 'bg-black';

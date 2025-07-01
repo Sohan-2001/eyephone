@@ -1,3 +1,4 @@
+
 import React from "react";
 import type { WidgetConfig } from "@/types";
 import { ClockWidget } from "@/components/widgets/clock-widget";
@@ -70,6 +71,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetConfig> = {
     name: "Notes",
     description: "Jot down your thoughts.",
     isIcon: true,
+    href: "/notes",
     component: NotesAppIcon,
     colSpan: 1,
     rowSpan: 1,
