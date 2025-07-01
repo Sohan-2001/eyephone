@@ -130,7 +130,7 @@ export default function CameraPage() {
                 <>
                     <Button variant="ghost" onClick={handleRetake} className="text-white hover:bg-white/10 hover:text-white text-lg">Retake</Button>
                     <Button onClick={handleUsePhoto} disabled={isUploading} size="lg" className="text-lg">
-                        {isUploading ? <Loader2 className="animate-spin" /> : 'Use Photo'}
+                        {isUploading ? <Loader2 className="animate-spin" /> : 'Save'}
                     </Button>
                 </>
             ) : (
