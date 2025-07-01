@@ -1,4 +1,6 @@
+
 "use client";
+import Link from "next/link";
 
 const SiriIcon = () => (
     <div className="relative w-24 h-24 flex items-center justify-center">
@@ -60,14 +62,12 @@ const SiriIcon = () => (
 
 export function SiriWidget() {
   return (
-    <a
-      href="https://gemini.google.com"
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      href="/safari?url=https://gemini.google.com"
       className="w-full h-full flex flex-col items-center justify-center gap-2 bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 p-4 text-white shadow-lg"
     >
       <SiriIcon />
       <span className="font-semibold text-lg mt-2">Siri</span>
-    </a>
+    </Link>
   );
 }
