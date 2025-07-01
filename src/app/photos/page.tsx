@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { listImages, deleteImage } from '@/lib/actions';
-import { ArrowLeft, Image as ImageIcon, Edit, Trash2, Loader2 } from 'lucide-react';
+import { ArrowLeft, Image as ImageIcon, Trash2, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -18,14 +18,20 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import {
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import type { ListBlobResultBlob } from '@vercel/blob';
+import { cn } from '@/lib/utils';
 
 export default function PhotosPage() {
   const [blobs, setBlobs] = useState<ListBlobResultBlob[]>([]);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState<string | null>(null); // store pathname of deleting image
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -93,7 +99,11 @@ export default function PhotosPage() {
           ) : blobs.length > 0 ? (
             <div className="grid grid-cols-3 gap-1">
               {blobs.map((blob) => (
-                <div key={blob.pathname} className="aspect-square relative rounded-md overflow-hidden group">
+                <div 
+                    key={blob.pathname} 
+                    className={cn("aspect-square relative rounded-md overflow-hidden group", !isEditing && "cursor-pointer")}
+                    onClick={() => !isEditing && setSelectedImage(blob.url)}
+                >
                   <Image
                     src={blob.url}
                     alt={blob.pathname}
@@ -110,6 +120,7 @@ export default function PhotosPage() {
                                     size="icon"
                                     className="w-10 h-10 rounded-full"
                                     disabled={isDeleting === blob.pathname}
+                                    onClick={(e) => e.stopPropagation()}
                                 >
                                 {isDeleting === blob.pathname ? <Loader2 className="animate-spin" /> : <Trash2 size={20} />}
                                 </Button>
@@ -143,6 +154,21 @@ export default function PhotosPage() {
           )}
         </div>
       </div>
+
+      <Dialog open={!!selectedImage} onOpenChange={(isOpen) => { if (!isOpen) setSelectedImage(null) }}>
+        <DialogContent className="max-w-[90vw] h-auto p-0 border-0 bg-transparent shadow-none flex items-center justify-center">
+            {selectedImage && (
+              <Image
+                src={selectedImage}
+                alt="Selected photo"
+                width={1200}
+                height={1200}
+                className="object-contain w-auto h-auto max-w-full max-h-[80vh] rounded-lg"
+              />
+            )}
+        </DialogContent>
+      </Dialog>
+
 
       <Link href="/" className="absolute top-12 left-4 z-20 p-2 group">
         <div className="w-8 h-8 bg-foreground/10 rounded-full flex items-center justify-center group-hover:bg-foreground/20 transition-colors">
