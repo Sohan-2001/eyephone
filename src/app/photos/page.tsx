@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { listImages, deleteImage } from '@/lib/actions';
-import { ArrowLeft, Image as ImageIcon, Trash2, Loader2 } from 'lucide-react';
+import { ArrowLeft, Image as ImageIcon, Trash2, Loader2, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -24,6 +24,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import type { ListBlobResultBlob } from '@vercel/blob';
@@ -159,9 +160,12 @@ export default function PhotosPage() {
       </div>
 
       <Dialog open={!!selectedImage} onOpenChange={(isOpen) => { if (!isOpen) setSelectedImage(null) }}>
-        <DialogContent className="max-w-[90vw] h-auto p-0 border-0 bg-transparent shadow-none flex items-center justify-center">
+        <DialogContent 
+            withCloseButton={false}
+            className="max-w-[90vw] h-auto p-0 border-0 bg-transparent shadow-none flex items-center justify-center"
+        >
             {selectedImage && (
-              <>
+              <div className="relative group">
                 <DialogHeader className="sr-only">
                     <DialogTitle>Full Screen Photo</DialogTitle>
                     <DialogDescription>A larger view of the selected photo.</DialogDescription>
@@ -173,7 +177,11 @@ export default function PhotosPage() {
                     height={1200}
                     className="object-contain w-auto h-auto max-w-full max-h-[80vh] rounded-lg"
                 />
-              </>
+                <DialogClose className="absolute top-2 right-2 p-1 bg-black/50 text-white rounded-full hover:bg-black/75 transition-colors focus:outline-none focus:ring-2 focus:ring-white opacity-0 group-hover:opacity-100">
+                    <X className="h-5 w-5" />
+                    <span className="sr-only">Close</span>
+                </DialogClose>
+              </div>
             )}
         </DialogContent>
       </Dialog>
