@@ -6,7 +6,7 @@ import { WeatherWidget } from "@/components/widgets/weather-widget";
 import { PhotosWidget } from "@/components/widgets/photos-widget";
 import { MusicWidget } from "@/components/widgets/music-widget";
 import { AppIcon } from "@/components/widgets/app-icon";
-import { Settings, Mail, MessagesSquare } from "lucide-react";
+import { Settings, Mail, MessagesSquare, Compass } from "lucide-react";
 import { CameraAppIcon } from "@/components/widgets/camera-app-icon";
 
 export const WIDGET_REGISTRY: Record<string, WidgetConfig> = {
@@ -85,6 +85,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetConfig> = {
     name: "Messages",
     description: "Your text conversations.",
     isIcon: true,
+    href: "/messages",
     component: (props) =>
       React.createElement(AppIcon, {
         ...props,
@@ -101,6 +102,22 @@ export const WIDGET_REGISTRY: Record<string, WidgetConfig> = {
     description: "Access the camera.",
     isIcon: true,
     component: CameraAppIcon,
+    colSpan: 1,
+    rowSpan: 1,
+  },
+  Safari: {
+    id: "Safari",
+    name: "Safari",
+    description: "Browse the web.",
+    isIcon: true,
+    href: "/safari",
+    component: (props) =>
+      React.createElement(AppIcon, {
+        ...props,
+        icon: Compass,
+        label: "Safari",
+        color: "#3b82f6",
+      }),
     colSpan: 1,
     rowSpan: 1,
   },

@@ -15,6 +15,7 @@ export interface WidgetConfig {
   colSpan: number;
   rowSpan: number;
   isIcon?: boolean;
+  href?: string;
 }
 
 export interface WidgetInstance extends WidgetConfig {
