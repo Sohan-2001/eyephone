@@ -126,6 +126,11 @@ export default function NotesPage() {
             className="flex-1 resize-none border-0 shadow-none focus-visible:ring-0 px-0 text-base"
           />
         </main>
+        <footer className="p-4 border-t shrink-0">
+          <Button variant="outline" className="w-full" onClick={() => setSelectedNoteId(null)}>
+            Back
+          </Button>
+        </footer>
       </div>
     );
   }
