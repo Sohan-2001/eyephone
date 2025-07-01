@@ -12,6 +12,7 @@ import { SettingsAppIcon } from "@/components/widgets/settings-app-icon";
 import { MailAppIcon } from "@/components/widgets/mail-app-icon";
 import { MessagesAppIcon } from "@/components/widgets/messages-app-icon";
 import { MusicAppIcon } from "@/components/widgets/music-app-icon";
+import { NotesAppIcon } from "@/components/widgets/notes-app-icon";
 
 export const WIDGET_REGISTRY: Record<string, WidgetConfig> = {
   Clock: {
@@ -60,6 +61,15 @@ export const WIDGET_REGISTRY: Record<string, WidgetConfig> = {
     description: "Listen to your music.",
     isIcon: true,
     component: MusicAppIcon,
+    colSpan: 1,
+    rowSpan: 1,
+  },
+  Notes: {
+    id: "Notes",
+    name: "Notes",
+    description: "Jot down your thoughts.",
+    isIcon: true,
+    component: NotesAppIcon,
     colSpan: 1,
     rowSpan: 1,
   },
