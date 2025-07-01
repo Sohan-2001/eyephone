@@ -48,10 +48,19 @@ export async function deleteImage(url: string) {
     revalidatePath('/photos');
 }
 
-// --- Notes Actions ---
+// --- Notes & Folders Actions ---
 
-async function initNotesTable() {
+async function initDatabase() {
     try {
+        await db.query(`
+            CREATE TABLE IF NOT EXISTS folders (
+                id SERIAL PRIMARY KEY,
+                name TEXT NOT NULL,
+                ip_address VARCHAR(45) NOT NULL,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+            );
+        `, []);
+
         await db.query(`
             CREATE TABLE IF NOT EXISTS notes (
                 id SERIAL PRIMARY KEY,
@@ -62,17 +71,82 @@ async function initNotesTable() {
                 updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
             );
         `, []);
+        
+        // Add folder_id column to notes table if it doesn't exist
+        const result = await db.query(`
+            SELECT column_name 
+            FROM information_schema.columns 
+            WHERE table_name='notes' AND column_name='folder_id'
+        `, []);
+
+        if (result.rowCount === 0) {
+            await db.query(`
+                ALTER TABLE notes 
+                ADD COLUMN folder_id INTEGER REFERENCES folders(id) ON DELETE SET NULL;
+            `, []);
+        }
     } catch (error) {
-        console.error("Error initializing notes table:", error);
-        throw new Error("Could not initialize notes table.");
+        console.error("Error initializing database schema:", error);
+        throw new Error("Could not initialize database.");
     }
 }
 
-export async function getNotes() {
-    await initNotesTable();
+// FOLDER ACTIONS
+export async function getFolders() {
+    await initDatabase();
     const ip = getIP();
     try {
-        const result = await db.query('SELECT id, title, content, updated_at FROM notes WHERE ip_address = $1 ORDER BY updated_at DESC', [ip]);
+        const result = await db.query('SELECT * FROM folders WHERE ip_address = $1 ORDER BY name ASC', [ip]);
+        return result.rows;
+    } catch (error) {
+        console.error("Failed to fetch folders:", error);
+        return [];
+    }
+}
+
+export async function createFolder(name: string) {
+    await initDatabase();
+    const ip = getIP();
+    try {
+        const result = await db.query('INSERT INTO folders (name, ip_address) VALUES ($1, $2) RETURNING *', [name, ip]);
+        revalidatePath('/notes');
+        return result.rows[0];
+    } catch (error) {
+        console.error("Failed to create folder:", error);
+        throw new Error("Could not create new folder.");
+    }
+}
+
+export async function deleteFolder(id: number) {
+    await initDatabase();
+    const ip = getIP();
+    try {
+        await db.query('DELETE FROM folders WHERE id = $1 AND ip_address = $2', [id, ip]);
+        revalidatePath('/notes');
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to delete folder:", error);
+        return { success: false, message: 'Could not delete folder.' };
+    }
+}
+
+
+// NOTE ACTIONS
+export async function getNotes(folderId?: number | 'all') {
+    await initDatabase();
+    const ip = getIP();
+    try {
+        let query = 'SELECT id, title, content, updated_at, folder_id FROM notes WHERE ip_address = $1';
+        const params: (string | number)[] = [ip];
+
+        if (typeof folderId === 'number') {
+            query += ' AND folder_id = $2';
+            params.push(folderId);
+        }
+        
+        query += ' ORDER BY updated_at DESC';
+        
+        const result = await db.query(query, params);
         return result.rows;
     } catch (error) {
         console.error("Failed to fetch notes:", error);
@@ -80,13 +154,16 @@ export async function getNotes() {
     }
 }
 
-export async function createNote() {
-    await initNotesTable();
+export async function createNote(folderId?: number | null) {
+    await initDatabase();
     const ip = getIP();
     const defaultTitle = "New Note";
     const defaultContent = "";
     try {
-        const result = await db.query('INSERT INTO notes (title, content, ip_address) VALUES ($1, $2, $3) RETURNING id, title, content, updated_at', [defaultTitle, defaultContent, ip]);
+        const result = await db.query(
+            'INSERT INTO notes (title, content, ip_address, folder_id) VALUES ($1, $2, $3, $4) RETURNING id, title, content, updated_at, folder_id', 
+            [defaultTitle, defaultContent, ip, folderId]
+        );
         revalidatePath('/notes');
         return result.rows[0];
     } catch (error) {
@@ -98,7 +175,7 @@ export async function createNote() {
 export async function updateNote(id: number, title: string, content: string) {
     const ip = getIP();
     try {
-        const result = await db.query('UPDATE notes SET title = $1, content = $2, updated_at = CURRENT_TIMESTAMP WHERE id = $3 AND ip_address = $4 RETURNING id, title, content, updated_at', [title, content, id, ip]);
+        const result = await db.query('UPDATE notes SET title = $1, content = $2, updated_at = CURRENT_TIMESTAMP WHERE id = $3 AND ip_address = $4 RETURNING id, title, content, updated_at, folder_id', [title, content, id, ip]);
         revalidatePath('/notes');
         return result.rows[0];
     } catch (error) {
@@ -116,5 +193,17 @@ export async function deleteNote(id: number) {
     } catch (error) {
         console.error("Failed to delete note:", error);
         return { success: false, message: 'Could not delete note.' };
+    }
+}
+
+export async function moveNoteToFolder(noteId: number, folderId: number | null) {
+    const ip = getIP();
+    try {
+        await db.query('UPDATE notes SET folder_id = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 AND ip_address = $3', [folderId, noteId, ip]);
+        revalidatePath('/notes');
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to move note:", error);
+        throw new Error("Could not move note.");
     }
 }

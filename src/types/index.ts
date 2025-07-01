@@ -1,3 +1,4 @@
+
 import type React from 'react';
 
 export interface WidgetComponentProps {
@@ -21,3 +22,17 @@ export interface WidgetConfig {
 export interface WidgetInstance extends WidgetConfig {
   instanceId: string;
 }
+
+// App-specific types
+export type Note = {
+  id: number;
+  title: string;
+  content: string;
+  updated_at: string;
+  folder_id: number | null;
+};
+
+export type Folder = {
+  id: number;
+  name: string;
+};
