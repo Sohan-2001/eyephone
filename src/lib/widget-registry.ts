@@ -13,6 +13,7 @@ import { MailAppIcon } from "@/components/widgets/mail-app-icon";
 import { MessagesAppIcon } from "@/components/widgets/messages-app-icon";
 import { MusicAppIcon } from "@/components/widgets/music-app-icon";
 import { NotesAppIcon } from "@/components/widgets/notes-app-icon";
+import { NetflixAppIcon } from "@/components/widgets/netflix-app-icon";
 
 export const WIDGET_REGISTRY: Record<string, WidgetConfig> = {
   Clock: {
@@ -123,6 +124,15 @@ export const WIDGET_REGISTRY: Record<string, WidgetConfig> = {
         label: "Safari",
         color: "#3b82f6",
       }),
+    colSpan: 1,
+    rowSpan: 1,
+  },
+  Netflix: {
+    id: "Netflix",
+    name: "Netflix",
+    description: "Watch movies and TV shows.",
+    isIcon: true,
+    component: NetflixAppIcon,
     colSpan: 1,
     rowSpan: 1,
   },
