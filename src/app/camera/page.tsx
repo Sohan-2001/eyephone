@@ -3,17 +3,21 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowLeft, Camera as CameraIcon, Loader2, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { uploadImage } from '@/lib/actions';
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 export default function CameraPage() {
   const { toast } = useToast();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
-  const [isTakingPicture, setIsTakingPicture] = useState(false);
+  const [capturedImageUri, setCapturedImageUri] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     const getCameraPermission = async () => {
@@ -33,7 +37,10 @@ export default function CameraPage() {
         });
       }
     };
-    getCameraPermission();
+
+    if (!capturedImageUri) {
+        getCameraPermission();
+    }
 
     return () => {
       if (videoRef.current && videoRef.current.srcObject) {
@@ -41,12 +48,11 @@ export default function CameraPage() {
         stream.getTracks().forEach(track => track.stop());
       }
     };
-  }, [toast]);
+  }, [toast, capturedImageUri]);
 
-  const handleTakePhoto = async () => {
+  const handleTakePhoto = () => {
     if (!videoRef.current || !canvasRef.current || !hasCameraPermission) return;
 
-    setIsTakingPicture(true);
     const video = videoRef.current;
     const canvas = canvasRef.current;
     canvas.width = video.videoWidth;
@@ -54,21 +60,31 @@ export default function CameraPage() {
     const context = canvas.getContext('2d');
     if (!context) {
         toast({ variant: 'destructive', title: 'Error', description: 'Could not get canvas context.' });
-        setIsTakingPicture(false);
         return;
     }
 
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     const dataUri = canvas.toDataURL('image/png');
+    setCapturedImageUri(dataUri);
+  };
+  
+  const handleRetake = () => {
+    setCapturedImageUri(null);
+  };
 
+  const handleUsePhoto = async () => {
+    if (!capturedImageUri) return;
+
+    setIsUploading(true);
     try {
-      await uploadImage(dataUri);
+      await uploadImage(capturedImageUri);
       toast({ title: 'Success!', description: 'Photo uploaded.' });
     } catch (error) {
       console.error('Upload failed:', error);
       toast({ variant: 'destructive', title: 'Upload Failed', description: 'Could not save photo.' });
     } finally {
-      setIsTakingPicture(false);
+      setIsUploading(false);
+      setCapturedImageUri(null);
     }
   };
 
@@ -85,9 +101,15 @@ export default function CameraPage() {
         </div>
 
         {/* Camera View */}
-        <div className="flex-1 flex items-center justify-center overflow-hidden pt-10">
-          <video ref={videoRef} className="w-full h-full object-cover" autoPlay muted playsInline />
+        <div className="flex-1 flex items-center justify-center overflow-hidden pt-10 relative">
+          <video ref={videoRef} className={cn("w-full h-full object-cover", capturedImageUri && "invisible")} autoPlay muted playsInline />
           <canvas ref={canvasRef} className="hidden" />
+
+          {capturedImageUri && (
+             <div className="absolute inset-0 w-full h-full bg-black">
+                <Image src={capturedImageUri} alt="Captured photo" fill className="object-contain" />
+             </div>
+          )}
 
           {hasCameraPermission === false && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/80 p-4">
@@ -103,19 +125,26 @@ export default function CameraPage() {
         </div>
 
         {/* Footer / Controls */}
-        <div className="h-32 flex items-center justify-center p-4 z-10">
-            <button
-                onClick={handleTakePhoto}
-                disabled={isTakingPicture || !hasCameraPermission}
-                className="w-20 h-20 rounded-full bg-white/20 border-4 border-white flex items-center justify-center disabled:opacity-50 transition-opacity"
-                aria-label="Take Picture"
-            >
-                {isTakingPicture ? (
-                    <Loader2 className="animate-spin text-white" size={32} />
-                ) : (
-                    <CameraIcon className="text-white" size={32} />
-                )}
-            </button>
+        <div className="h-32 flex items-center justify-around p-4 z-10">
+            {capturedImageUri ? (
+                <>
+                    <Button variant="ghost" onClick={handleRetake} className="text-white hover:bg-white/10 hover:text-white text-lg">Retake</Button>
+                    <Button onClick={handleUsePhoto} disabled={isUploading} size="lg" className="text-lg">
+                        {isUploading ? <Loader2 className="animate-spin" /> : 'Use Photo'}
+                    </Button>
+                </>
+            ) : (
+                <div className="flex items-center justify-center w-full">
+                    <button
+                        onClick={handleTakePhoto}
+                        disabled={!hasCameraPermission}
+                        className="w-20 h-20 rounded-full bg-white/20 border-4 border-white flex items-center justify-center disabled:opacity-50 transition-opacity"
+                        aria-label="Take Picture"
+                    >
+                        <CameraIcon className="text-white" size={32} />
+                    </button>
+                </div>
+            )}
         </div>
       </div>
     </>
