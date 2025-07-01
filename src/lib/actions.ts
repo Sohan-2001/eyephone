@@ -1,8 +1,9 @@
 
 'use server';
 
-import { put, list } from '@vercel/blob';
+import { put, list, del } from '@vercel/blob';
 import { headers } from 'next/headers';
+import { revalidatePath } from 'next/cache';
 
 function getIP() {
   const forwardedFor = headers().get('x-forwarded-for');
@@ -26,6 +27,7 @@ export async function uploadImage(dataUri: string) {
     access: 'public',
     contentType: 'image/png',
   });
+  revalidatePath('/photos');
   return blob;
 }
 
@@ -37,5 +39,10 @@ export async function listImages() {
     prefix: `photos/${folderName}/`,
   });
 
-  return blobs;
+  return blobs.sort((a, b) => b.uploadedAt.getTime() - a.uploadedAt.getTime());
+}
+
+export async function deleteImage(url: string) {
+    await del(url);
+    revalidatePath('/photos');
 }
