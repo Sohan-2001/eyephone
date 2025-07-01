@@ -21,6 +21,9 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import type { ListBlobResultBlob } from '@vercel/blob';
@@ -158,13 +161,19 @@ export default function PhotosPage() {
       <Dialog open={!!selectedImage} onOpenChange={(isOpen) => { if (!isOpen) setSelectedImage(null) }}>
         <DialogContent className="max-w-[90vw] h-auto p-0 border-0 bg-transparent shadow-none flex items-center justify-center">
             {selectedImage && (
-              <Image
-                src={selectedImage}
-                alt="Selected photo"
-                width={1200}
-                height={1200}
-                className="object-contain w-auto h-auto max-w-full max-h-[80vh] rounded-lg"
-              />
+              <>
+                <DialogHeader className="sr-only">
+                    <DialogTitle>Full Screen Photo</DialogTitle>
+                    <DialogDescription>A larger view of the selected photo.</DialogDescription>
+                </DialogHeader>
+                <Image
+                    src={selectedImage}
+                    alt="Selected photo"
+                    width={1200}
+                    height={1200}
+                    className="object-contain w-auto h-auto max-w-full max-h-[80vh] rounded-lg"
+                />
+              </>
             )}
         </DialogContent>
       </Dialog>
