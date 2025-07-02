@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Plane, Wifi, Cast } from "lucide-react";
@@ -9,13 +10,13 @@ const ControlButton = ({ icon: Icon }: { icon: React.ElementType }) => (
 );
 
 const WifiControl = () => (
-    <div className="flex items-center gap-3 text-white">
+    <div className="flex items-center gap-3 text-foreground">
         <div className="w-14 h-14 bg-blue-500 rounded-full flex items-center justify-center">
             <Wifi size={24} className="text-white" />
         </div>
         <div>
             <p className="font-semibold">Wi-Fi</p>
-            <p className="text-sm text-white/80">Sohan 5G</p>
+            <p className="text-sm text-muted-foreground">Sohan 5G</p>
         </div>
     </div>
 )
