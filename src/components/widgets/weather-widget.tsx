@@ -1,7 +1,7 @@
 
 "use client";
 
-import { LocateFixed, Loader2, Droplets, Sun, Moon, Cloud } from "lucide-react";
+import { LocateFixed, Loader2, Droplets, Sun, Moon } from "lucide-react";
 import type { WidgetComponentProps } from "@/types";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -142,8 +142,6 @@ export function WeatherWidget({ instanceId }: WidgetComponentProps) {
       )
   }
 
-  const isCloudy = weather.condition.toLowerCase().includes('cloud') || weather.condition.toLowerCase().includes('overcast');
-
   return (
     <div className={cn(
         "w-full h-full p-4 flex flex-col justify-between text-white relative overflow-hidden transition-colors duration-500",
@@ -158,11 +156,8 @@ export function WeatherWidget({ instanceId }: WidgetComponentProps) {
           <p className="text-6xl font-thin">{weather.temperature}°</p>
           {error && <p className="text-xs text-yellow-300 mt-1">{error}</p>}
         </div>
-        <div className="flex flex-col items-end">
-            <div className="relative h-16 w-16">
-              {weather.isDay ? <Sun size={64} className="text-white/80" /> : <Moon size={64} className="text-white/80" />}
-              {isCloudy && <Cloud size={64} className="absolute top-0 left-0 text-white/50" />}
-            </div>
+        <div>
+            {weather.isDay ? <Sun size={64} className="text-white/80" /> : <Moon size={64} className="text-white/80" />}
         </div>
       </div>
 
