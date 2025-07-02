@@ -155,6 +155,7 @@ export function WeatherWidget({ instanceId }: WidgetComponentProps) {
         <div>
           <p className="font-bold text-2xl">{weather.city}</p>
           <p className="text-lg">{weather.condition}</p>
+          <p className="text-6xl font-thin">{weather.temperature}°</p>
           {error && <p className="text-xs text-yellow-300 mt-1">{error}</p>}
         </div>
         <div className="flex flex-col items-end">
@@ -162,7 +163,6 @@ export function WeatherWidget({ instanceId }: WidgetComponentProps) {
               {weather.isDay ? <Sun size={64} className="text-white/80" /> : <Moon size={64} className="text-white/80" />}
               {isCloudy && <Cloud size={64} className="absolute top-0 left-0 text-white/50" />}
             </div>
-            <p className="text-6xl font-thin -mt-4">{weather.temperature}°</p>
         </div>
       </div>
 
