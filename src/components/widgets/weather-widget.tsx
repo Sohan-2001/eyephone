@@ -132,7 +132,6 @@ export function WeatherWidget({ instanceId }: WidgetComponentProps) {
     )
   }
 
-  // This fallback is for the unlikely case where loading is done but weather is still null.
   if (!weather) {
       return (
         <div className="w-full h-full p-4 flex flex-col items-center justify-center bg-gradient-to-br from-gray-500 to-gray-700 text-white text-center">
@@ -152,18 +151,21 @@ export function WeatherWidget({ instanceId }: WidgetComponentProps) {
             ? "bg-gradient-to-br from-blue-400 to-cyan-400" 
             : "bg-gradient-to-br from-indigo-800 to-gray-900"
     )}>
-       <div className="absolute top-2 right-2 opacity-50">
-        {weather.isDay ? <Sun size={64} /> : <Moon size={64} />}
-        {isCloudy && <Cloud size={64} className="absolute -bottom-4 -left-4" />}
-      </div>
       <div className="flex justify-between items-start z-10">
         <div>
           <p className="font-bold text-2xl">{weather.city}</p>
           <p className="text-lg">{weather.condition}</p>
           {error && <p className="text-xs text-yellow-300 mt-1">{error}</p>}
         </div>
-        <p className="text-6xl font-thin">{weather.temperature}°</p>
+        <div className="flex flex-col items-end">
+            <div className="relative h-16 w-16">
+              {weather.isDay ? <Sun size={64} className="text-white/80" /> : <Moon size={64} className="text-white/80" />}
+              {isCloudy && <Cloud size={64} className="absolute top-0 left-0 text-white/50" />}
+            </div>
+            <p className="text-6xl font-thin -mt-4">{weather.temperature}°</p>
+        </div>
       </div>
+
       <div className="flex justify-between items-end text-sm font-medium z-10">
         <div className="flex items-center gap-1.5">
             <Droplets size={16} />
