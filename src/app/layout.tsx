@@ -27,7 +27,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-body antialiased bg-slate-900">
+      <body className="font-body antialiased outer-frame-gradient">
         <PhoneShell>{children}</PhoneShell>
         <Toaster />
       </body>
