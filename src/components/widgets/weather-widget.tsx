@@ -1,9 +1,10 @@
 
 "use client";
 
-import { LocateFixed, Loader2, Droplets } from "lucide-react";
+import { LocateFixed, Loader2, Droplets, Sun, Moon, Cloud } from "lucide-react";
 import type { WidgetComponentProps } from "@/types";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface WeatherData {
   city: string;
@@ -12,6 +13,7 @@ interface WeatherData {
   high: number;
   low: number;
   rainfallChance: number;
+  isDay: boolean;
 }
 
 // WMO Weather interpretation codes
@@ -61,7 +63,7 @@ export function WeatherWidget({ instanceId }: WidgetComponentProps) {
         setLoading(true);
         try {
             const [weatherResponse, geoResponse] = await Promise.all([
-                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&hourly=precipitation_probability&timezone=auto`),
+                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min&hourly=precipitation_probability&timezone=auto`),
                 fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`)
             ]);
 
@@ -87,6 +89,7 @@ export function WeatherWidget({ instanceId }: WidgetComponentProps) {
                 high: Math.round(weatherData.daily.temperature_2m_max[0]),
                 low: Math.round(weatherData.daily.temperature_2m_min[0]),
                 rainfallChance: currentPrecipitation,
+                isDay: weatherData.current.is_day === 1,
             });
             setError(geoData.city ? null : "Could not determine city name.");
 
@@ -140,9 +143,20 @@ export function WeatherWidget({ instanceId }: WidgetComponentProps) {
       )
   }
 
+  const isCloudy = weather.condition.toLowerCase().includes('cloud') || weather.condition.toLowerCase().includes('overcast');
+
   return (
-    <div className="w-full h-full p-4 flex flex-col justify-between bg-gradient-to-br from-blue-400 to-blue-600 text-white">
-      <div className="flex justify-between items-start">
+    <div className={cn(
+        "w-full h-full p-4 flex flex-col justify-between text-white relative overflow-hidden transition-colors duration-500",
+        weather.isDay 
+            ? "bg-gradient-to-br from-blue-400 to-cyan-400" 
+            : "bg-gradient-to-br from-indigo-800 to-gray-900"
+    )}>
+       <div className="absolute top-2 right-2 opacity-50">
+        {weather.isDay ? <Sun size={64} /> : <Moon size={64} />}
+        {isCloudy && <Cloud size={64} className="absolute -bottom-4 -left-4" />}
+      </div>
+      <div className="flex justify-between items-start z-10">
         <div>
           <p className="font-bold text-2xl">{weather.city}</p>
           <p className="text-lg">{weather.condition}</p>
@@ -150,7 +164,7 @@ export function WeatherWidget({ instanceId }: WidgetComponentProps) {
         </div>
         <p className="text-6xl font-thin">{weather.temperature}°</p>
       </div>
-      <div className="flex justify-between items-end text-sm font-medium">
+      <div className="flex justify-between items-end text-sm font-medium z-10">
         <div className="flex items-center gap-1.5">
             <Droplets size={16} />
             <span>{weather.rainfallChance}% chance of rain</span>
