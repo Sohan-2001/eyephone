@@ -52,7 +52,7 @@ export function CameraAppIcon() {
           <circle cx="24" cy="33" r="3" fill="white" fillOpacity={0.3} />
         </svg>
       </div>
-      <span className="text-xs text-center text-foreground font-medium mt-1">
+      <span className="text-xs text-center text-muted-foreground font-medium mt-1">
         Camera
       </span>
     </div>

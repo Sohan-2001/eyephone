@@ -24,7 +24,7 @@ export function AppIcon({
       >
         <Icon size={32} style={{ color: iconColor }} />
       </div>
-      <span className="text-xs text-center text-foreground font-medium mt-1">
+      <span className="text-xs text-center text-muted-foreground font-medium mt-1">
         {label}
       </span>
     </div>

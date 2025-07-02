@@ -45,7 +45,7 @@ export function NotesAppIcon() {
       <div className="w-14 h-14 rounded-xl flex items-center justify-center overflow-hidden shadow-md">
          <NotesIconSvg />
       </div>
-      <span className="text-xs text-center text-foreground font-medium mt-1">
+      <span className="text-xs text-center text-muted-foreground font-medium mt-1">
         Notes
       </span>
     </div>
