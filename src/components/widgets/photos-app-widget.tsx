@@ -33,10 +33,10 @@ export function PhotosAppWidget() {
     return (
         <Link 
           href="/photos"
-          className="w-full h-full flex flex-col items-center justify-center gap-2 bg-white/20 backdrop-blur-lg rounded-3xl border border-white/20 p-4 text-white shadow-lg transition-transform hover:scale-105"
+          className="w-full h-full flex flex-col items-center justify-center gap-2 bg-white/20 backdrop-blur-lg rounded-3xl border border-white/20 p-4 shadow-lg transition-transform hover:scale-105"
         >
             <PhotoPinwheelIcon />
-            <span className="font-semibold text-lg mt-2">Photos</span>
+            <span className="font-semibold text-lg mt-2 text-muted-foreground">Photos</span>
         </Link>
     );
 };

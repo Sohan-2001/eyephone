@@ -64,10 +64,10 @@ export function SiriWidget() {
   return (
     <Link
       href="/safari?url=https://gemini.google.com"
-      className="w-full h-full flex flex-col items-center justify-center gap-2 bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 p-4 text-white shadow-lg"
+      className="w-full h-full flex flex-col items-center justify-center gap-2 bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 p-4 shadow-lg"
     >
       <SiriIcon />
-      <span className="font-semibold text-lg mt-2">Siri</span>
+      <span className="font-semibold text-lg mt-2 text-muted-foreground">Siri</span>
     </Link>
   );
 }

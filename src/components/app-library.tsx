@@ -10,7 +10,7 @@ export default function AppLibrary() {
 
     return (
         <div className="p-4 h-full flex flex-col pt-12">
-            <h1 className="text-2xl font-bold text-white mb-4 px-2">App Library</h1>
+            <h1 className="text-2xl font-bold text-muted-foreground mb-4 px-2">App Library</h1>
             <ScrollArea className="flex-1">
                 <div className="grid grid-cols-4 gap-y-8 p-2">
                     {appIcons.map(app => {
